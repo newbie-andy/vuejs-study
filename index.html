@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue-prev</title>
+    <link rel="stylesheet" href="./common.css" >
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- <div class="block">
+            <header>这里是标题</header>
+
+            <section class="content">
+                <div class="h">这里是内容快的标题</div>
+                <div class="detail">这里是详细内容</div>
+            </section>
+        </div> -->
+
+
+        <div class="block">
+            <header>通过文本插值的方式显示数据</header>
+            <section class="content">
+                <div class="h">运用vue的{{  }}方式显示文本数据</div>
+                <div class="detail">
+                    <p>这里就是运行的结果:</p>
+                    <b>{{ message }}</b>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>通过绑定节点特性的方式显示数据</header>
+            <section class="content">
+                <div class="h">运用vue的v-bind/:方式显示文本数据</div>
+                <div class="detail">
+                    <p>这里就是运行的结果(鼠标放在文本上会有提示的信息):</p>
+                    <b :title="bindmessage">鼠标放在文本上会有提示的信息</b>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>条件指令控制元素的显示与否（只有为true的DOM才会显示再文档中与v-show不一样）</header>
+            <section class="content">
+                <div class="h">v-if控制显示与否</div>
+                <div class="detail">
+                    <p>
+                        <button @click="toggle">点击修改seen的条件值</button>
+                    </p>
+                    <b v-if="seen">正向条件（显示）</b>
+                    <b v-if="!seen">反响条件（隐藏）</b>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>还有很多的其他的指令这里我们先不做过多的介绍。后期我们会在api的学习中加强练习的</header>
+            <section class="content">
+                <div class="h">v-for循环输出数据</div>
+                <div class="detail">
+                    <p>这是循环输出数据的结果，大大简化了数据与dom之间的处理</p>
+                    <p><button @click="additem">添加一个元素</button></p>
+                    <ul>
+                        <li v-for="data in datalist">
+                            <p>地名：{{ data.name }} </p>
+                            <p>拼音：{{ data.pinYin }}</p>
+                            <p>简写：{{ data.py }}</p>
+                            <hr/>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>逻辑处理用户的输入</header>
+            <section class="content">
+                <div class="h">文本的反转</div>
+                <div class="detail">
+                    <p>请点击按钮</p>
+                    <p><button @click="reverseMessage">开始处理</button></p>
+                    <p>{{ message }}</p>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>处理用户的输入与运用--->(v-model)</header>
+            <section class="content">
+                <div class="h">双向绑定的使用</div>
+                <div class="detail">
+                    <p>请输入信息</p>
+                    <p>
+                        <input type="text" v-model="message">
+                    </p>
+                    <p>{{ message }}</p>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>Vue的基础组件（这里是固定的文本组件）</header>
+            <section class="content">
+                <div class="h">基础组件的使用</div>
+                <div class="detail">
+                    <ul>
+                        <component-name></component-name>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>Vue的props使用将数据从父作用域中传给子组件中</header>
+            <section class="content">
+                <div class="h">props的使用</div>
+                <div class="detail">
+                    <ul>
+                        <data-from-parent
+                            v-for="(data, index) in datalist"
+                            :todo="data"
+                            :key="index"></data-from-parent>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>Vue的数据和方法</header>
+            <section class="content">
+                <div class="h">Vue实例在创建的时候其中的数据data就应该初始化了，这样才会实时响应；如果在实例被创建后，向data中添加新的属性将会不能实时更新，所以如果你知道在晚些时候需要一些属性就应该提前初始化它</div>
+                <div class="detail">
+                    <p>以下就是一个案例，我们在实例创建之前添加属性a,在实例创建后添加属性b,看看a,b的变化情况</p>
+                    <br/>
+                    <p>{{ a }}<button @click="changeFun('a')">测试实时改变</button></p>
+                    <br/>
+                    <p>{{ b }}<button @click="changeFun('b')">测试实时改变</button></p>
+                    <br/>
+                    <p>
+                        b在只针对它的事件进行调用的时候是不会实时更新（渲染update）的（我们只点击b的按钮的时候），但是其数据是在实时改变的，
+                        只有在实例中的属性被重新渲染的时候才会跟随着一起更新；
+                        结论：
+                        所以只有在实例创建之前前的初始化属性改变才会调用实例相关的属性和方法。
+                    </p>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>Vue防止修改其现有的属性freeze()</header>
+            <section class="content">
+                <div class="h">Vue实例创建之前的属性的改变会使DOM进行重新渲染，为了让其不进行渲染，我们可以对数据冻结，即对数据调用freeze()方法</div>
+                <div class="detail">
+                    <p>下面我们来通过按钮事件冻结我们的数据</p>
+                    <br/>
+                    <p></p><button @click="freezeData">开始冻结数据（这里的按钮的作用其实是无用的须在实例创建之前对数据对象进行冻结）</button></p>
+                    <p>{{ message }}</p>
+                    <p><input type="text" v-model="message"/></p>
+                    <p>补充： 对象的冻结，需要在Vue实例创建之前，这样数据的改变就不会更新在视图上了（readonly)</p>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>Vue中实例的属性及方法</header>
+            <section class="content">
+                <div class="h">Vue中实例的属性及方法我们用$开头，以便和我们自定义的数据属性进行区别</div>
+                <div class="detail">
+                    <p>下面我们来简单的使用一下$watch</p>
+                    <p>在数据变化的时候我们希望执行一些操作，当然这些操作我们可以在声明周期的环节中进行，但是类似的操作都放在里面或许不是最好的解决方案</p>
+                    <p><input type="text" v-model="message"/>{{ message }}</p>
+                    <p>上面我们监听message数据的变化，当其改变的时候我们就会执行相关的操作</p>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>Vue生命周期</header>
+            <section class="content">
+                <div class="h">在Vue实例创建之前要进行一系列的数据初始化，如： 设置数据监听、便宜模板、挂载实例到DOM、数据变化的时候实时更新DOM等操作，同时在这个过程中会运行一些生命周期钩子函数，给予用户在一定的场景下使用添加自己的代码的运用场景</div>
+                <div class="detail">
+                    <p>说明： 不要在选项属性或回掉上使用箭头函数，因为箭头函数是和上下文父级绑定在一起的，this并不会是你预期的Vue实例，所以在使用的时候经常会出现一些报错的情况</p>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>Vue模板语法</header>
+            <section class="content">
+                <div class="h">文本插值我们上面已经使用了很多的示例，如message，这里我们介绍一次性插值操作v-once</div>
+                <div class="detail">
+                    <b v-once>{{ message }}</b>
+                    <p><input type="text" v-model="message"></p>
+                    <p>尝试输入数据修改input中的值看看它能不能实时改变，不出意外上面粗体的数据是不会改变的因为它只在创建实例的时候执行一次数据的插值操作</p>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>Vue模板语法</header>
+            <section class="content">
+                <div class="h">html插值，我们可以将我们的html像文本插值的方式一样及进行插值操作，但是要使用v-html指令</div>
+                <div class="detail">
+                    <p>没有经过rawHtml处理：{{ htmlstr }}</p>
+                    <p v-html="htmlstr"></p>
+                    <br/>
+                    <p>补充：很容易看到上面的两个操作的不同之处，但是在这里提示：网站上动态渲染的任何html操作可能十分的危险，很容易导致xxs的攻击，请对可信内容使用html的插值操作，绝不要对用户提供的内容使用插值</p>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>Vue模板语法</header>
+            <section class="content">
+                <div class="h">特性，所谓的特性其实就是只使用特性的值或者方式，这里我们使用v-bind，在布尔特性的情况下，使按钮被点击</div>
+                <div class="detail">
+                    这里我们可以选择按钮的disabled的属性值
+                    <select v-model="type">
+                        <option v-for="buttonselect in buttonselects" :value="buttonselect">{{ buttonselect }}</option>
+                    </select>
+                    <button v-bind:disabled="type">此按钮不能被点击</button>
+                    <br/>
+                    <p>我们发现type为null、undefined、fasle不会被包含在渲染出来的button元素中（打开浏览器的DOM解构我们可以查看button上disabled属性存在与否）</p>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>Vue模板语法</header>
+            <section class="content">
+                <div class="h">使用javascript表达式</div>
+                <div class="detail">
+                   <p>vue提供了完全的javascript表达式的支持,如以下案例</p>
+                   <select v-model="type">
+                        <option v-for="buttonselect in buttonselects" :value="buttonselect">{{ buttonselect }}</option>
+                    </select>
+                   <p>{{ count + 1 }}</p>
+                   <p>{{ type ? 'type的值为true' : 'type的值为' + type }}</p>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>Vue模板语法</header>
+            <section class="content">
+                <div class="h">修饰符</div>
+                <div class="detail">
+                   <p>修饰符 (Modifiers) 是以半角句号 . 指明的特殊后缀，用于指出一个指令应该以特殊方式绑定。</p>
+                </div>
+            </section>
+        </div>
+
+        
+        <div class="block">
+            <header>计算属性</header>
+            <section class="content">
+                <div class="h">先来看一个简单的计算属性的例子</div>
+                <div class="detail">
+                   <p>通过computed的方式</p>
+                   <p>{{ getReverseMess }}</p>
+                   <p>通过methods的方式</p>
+                   <p>{{ mothodReverseMessage() }}</p>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>计算属性和方法之间的区别（重要！！）</header>
+            <section class="content">
+                <div class="h">对于计算属性来讲其更能很好处理实例依赖的属性的渲染工作，在依赖没有该改变的时候会直接返回上次处理的结果，儿而methods就不是了，每次的执行都要运行相关的逻辑代码</div>
+                <div class="detail">
+                    <p>以下是通过getReverseMess三次进行计算，但是实际上只的调用了一次，因为它在依赖没有改变的时候是以缓存的方式进行返回的并没有执行函数体</p>
+                    <p>{{ getReverseMess }}</p>
+                    <p>{{ getReverseMess }}</p>
+                    <p>{{ getReverseMess }}</p>
+                    <p>相反我们如果用methods的方式进行呢</p>
+                    <p>{{ mothodReverseMessage() }}</p>
+                    <p>{{ mothodReverseMessage() }}</p>
+                    <p>{{ mothodReverseMessage() }}</p>
+                    <br/>
+                    <p>很明显，在console中我们看到了四次的methods中的mothodReverseMessage()执行（有一次的执行因为在上个案例中我们也使用了它），而computer中的getReverseMess只执行了一次，这对于依赖不经常变化的数据很是友好，大大的优化了处理不必要的逻辑</p>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>class与style的对象绑定方式（！！！）</header>
+            <section class="content">
+                <div class="h">通过在对象中传入属性，可以动态地切换多个class，</div>
+                <div class="detail">
+                    <div>
+                        <p><span>是否显示：</span><input type="checkbox" v-model="isShow"/></p>
+                        <p><span>是否显示边框：</span><input type="checkbox" v-model="isBorder"/></p>
+                    </div>
+                    <p class="hide" :class="{ show: isShow,'border': isBorder }">根据isShow的值进行显示这个文本</p>
+
+                    <br/>
+                    <p>上面的操作中我们将对象内联到模板中，当然我们也可以将对象放在实例中，例如</p>
+                    <p class="hide" v-bind:class="outStyleObject">这里的class属性中的值我们将它放在了实例中，而我们只需要将对象绑定到class属性中即可（其实和上面的案例是一样的道理）</p>
+                    
+                    <br/>
+                    <p>相比以上两种情况，这里我们介绍绑定一个返回对象的计算属性（！！！这个很是重要，这里我们可以运用vue实例对象添加相关的数据初始化并实时跟踪变化响应）</p>
+                    <p class="hide" v-bind:class="initData">这里计算属性可以访问实例中的属性，并与其进行绑定，达到属性共享的作用</p>
+                </div>
+            </section>
+        </div>
+
+
+
+        
+    </div>
+    <script src='./components/BasicComponent.js'></script>
+    <script>
+        var data = {
+            message: `Hello vuejs! It\'s so cool`,//vue的开始文本插值
+            bindmessage: `This is bind message `,//bind数据绑定的方式
+            seen: true,//控制元素的显示与否，false为不显示也不出现再DOM上，二者只会出现一个,
+            datalist: [
+                { name: '北京', pinYin: 'beijing', py: 'bj', desc: 'BJS' },
+                { name: '上海', pinYin: 'shanghai', py: 'sh', desc: 'BJS' },
+                { name: '天津', pinYin: 'tianjin', py: 'tj', desc: 'BJS' }
+            ],
+            a: 'vue实例创建之前，创建并初始化的a',
+            htmlstr:  `<b style="color: red">这里是html插值操作产生的</b>`,
+            type: true,
+            buttonselects: [true,false,null,undefined],
+            count: 1,
+            isShow: true,
+            isBorder: true,
+            outStyleObject: {
+                show: true,
+                'border': true
+            }
+        };
+        //对象的冻结，需要在Vue实例创建之前，这样数据的改变就不会更新在视图上了（readonly）,这里为了实时更新我们就注释掉这个功能点了
+        //Object.freeze(data);
+        var app = new Vue({
+            el: '#app',
+            data() {
+                return data;
+            },
+            created: function () {
+                //这里我们选择在实例创建完后，进行创建新的属性b
+                this.b = 'vue实例创建完后，新创建的属性b';
+            },
+            updated: function() {
+                console.log('a:'+this.b);
+                console.log('b:'+this.b);
+                //b在只针对它的事件尽行调用的时候是不会实时更新的（我们只点击b的按钮的时候），
+                //只有在实例中的属性被重新渲染的时候才会跟随着一起更新
+                //结论：
+                //所以只有在实例创建之前前的初始化属性改变才会调用实例相关的属性和方法
+            },
+            computed: {
+                getReverseMess: function() {
+                    console.error('通过computed的方式进行执行');
+                    return this.message.split('').reverse().join('');
+                },
+                initData: function() {
+                    return { show: this.isShow,'border': this.isBorder};
+                }
+            },
+            methods: {
+                toggle: function() {
+                    this.seen = !this.seen;
+                },
+                additem: function() {
+                    //正常的数组添加数据
+                    this.datalist.unshift({ name: '天津', pinYin: 'tianjin', py: 'tj', desc: 'BJS' });
+                },
+                reverseMessage: function() {
+                    this.message = this.message.split(' ').reverse().join(' ');
+                },
+                mothodReverseMessage: function() {
+                    console.error('通过methods的方式进行执行');
+                    return this.message.split(' ').reverse().join(' ');
+                },
+                changeFun: function(string) {
+                    if(string == 'a') {
+                        this.a = Math.random()+"可以实时改变";
+                    }else if(string == 'b'){
+                        this.b = Math.random()+"可以实时改变";
+                    }
+                },
+                freezeData: function() {
+                    Object.freeze(data);
+                }
+            }
+        });
+
+        //这里我们使用了实例的方法来监听数据的变化
+        app.$watch('message', function() {
+            console.warn('别慌，这里是正确的输出！,我在一直监听message的改变呢');
+        });
+        app.$watch('type', function() {
+            console.log(this.type);
+        });
+    </script>
+</body>
+</html>
