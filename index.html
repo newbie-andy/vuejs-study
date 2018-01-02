@@ -287,7 +287,7 @@
         </div>
 
         <div class="block">
-            <header>class与style的对象绑定方式（！！！）</header>
+            <header>class的对象绑定方式（！！！）</header>
             <section class="content">
                 <div class="h">通过在对象中传入属性，可以动态地切换多个class，</div>
                 <div class="detail">
@@ -307,6 +307,75 @@
                 </div>
             </section>
         </div>
+
+        <div class="block">
+            <header>class的数组绑定方式</header>
+            <section class="content">
+                <div class="h">与对象的绑定方式有所不同，对象的绑定方式可能连带着类成立的条件，而数组的方式，主要体现类名上</div>
+                <div class="detail">
+                    <p>下面单独突出类型的形式</p>
+                    <div class="hide" :class="[classBorder, classShow]">通过数组的方式绑定类名</div>
+
+                    <br/>
+                    <p>条件判断型：</p>
+                    <div>
+                        <p><span>是否显示：</span><input type="checkbox" v-model="isShow"/></p>
+                        <p><span>是否显示边框：</span><input type="checkbox" v-model="isBorder"/></p>
+                    </div>
+                    <div class="hide" :class="[isShow ? classShow : '',isBorder ? classBorder : '']">
+                        此例中我们通过三位运算符进行判断
+                    </div>
+                    <div class="hide" :class="[{'show': isShow},{'border': isBorder}]">
+                        此例中我们通过数组中传对象的方式进行判断,不过这时在对象中的键值名称为类的名称（和类的绑定方式相像）
+                    </div>
+                    <br/>
+                    <p><b>1.对象的方式以类名称为key值，value值为成立的条件</b></p>
+                    <p><b>2.数组的方式，以data中的数据key值为类名代理，以value值为真是的类名</b></p>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>class的数组绑定方式</header>
+            <section class="content">
+                <div class="h">组件中使用类的绑定和传统的html结构绑定类名（上文的案例有介绍）相同</div>
+                <div class="detail">
+                    <p>直接使用class(非绑定式)</p>
+                    <class-component class="show border" classtype="非绑定式"></class-component>
+                    <br/>
+                    <p>条件判断型：</p>
+                    <div>
+                        <p><span>是否显示：</span><input type="checkbox" v-model="isShow"/></p>
+                        <p><span>是否显示边框：</span><input type="checkbox" v-model="isBorder"/></p>
+                    </div>
+                    <p>条件型的类名绑定(绑定式)</p>
+                    <class-component :class="initData" classtype="绑定式"></class-component>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>style的对象绑定方式</header>
+            <section class="content">
+                <div class="h">对象方式css的属性名称可以用驼峰命名法camelCase或者使用短横线的方式（但是要将属性名称用单引号引起来）</div>
+                <div class="detail">
+                   <p>驼峰法(请参考代码中的outCssOne)</p>
+                   <div :style="outCssOne">It's so cool! 我是使用对象的驼峰法</div>
+                </div>
+
+                <div class="detail">
+                   <p>短线法(请参考代码中的outCssTwo)</p>
+                   <div :style="outCssTwo">It's so cool! 我是使用对象的驼峰法</div>
+                </div>
+
+                <div class="detail">
+                    <p>计算属性返回法(请参考代码中的computed中的computedCss属性)</p>
+                    <div :style="computedCss">It's so cool! 我是使用对象的驼峰法</div>
+                </div>
+            </section>
+        </div>
+
+
 
 
 
@@ -333,6 +402,18 @@
             outStyleObject: {
                 show: true,
                 'border': true
+            },
+            classShow: 'show',
+            classBorder: 'border',
+            outCssOne: {
+                borderWidth: '2px',
+                borderColor: 'red',
+                borderStyle: 'solid'
+            },
+            outCssTwo: {
+                'border-width': '2px',
+                'border-color': 'red',
+                'border-style': 'solid'
             }
         };
         //对象的冻结，需要在Vue实例创建之前，这样数据的改变就不会更新在视图上了（readonly）,这里为了实时更新我们就注释掉这个功能点了
@@ -361,6 +442,14 @@
                 },
                 initData: function() {
                     return { show: this.isShow,'border': this.isBorder};
+                },
+                computedCss: function() {
+                    //return this.outCssOne;
+                    return {
+                        'border-width': '2px',
+                        'border-color': 'red',
+                        'border-style': 'solid'
+                    };
                 }
             },
             methods: {
@@ -382,6 +471,8 @@
                     if(string == 'a') {
                         this.a = Math.random()+"可以实时改变";
                     }else if(string == 'b'){
+                        //这里当点击b的按钮是不会发生实时响应的，因为它是在实例创建完成后才生成的（created之后的属性），但是它
+                        //的结果值是在不断的改变的，只有在其他的属性改变后他就会伴随着更新
                         this.b = Math.random()+"可以实时改变";
                     }
                 },

@@ -13,3 +13,8 @@ Vue.component('data-from-parent', {
                </li>`
 });
 
+Vue.component('class-component',{
+    props: ['classtype'],
+    template: `<div class="hide">我是class-component组件，我在使用{{ classtype }}</div>`,
+})
+
