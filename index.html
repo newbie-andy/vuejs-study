@@ -355,7 +355,7 @@
         </div>
 
         <div class="block">
-            <header>style的对象绑定方式</header>
+            <header>style的对象绑定方式（！！！写法很是重要：驼峰法、短线法、计算属性方法）</header>
             <section class="content">
                 <div class="h">对象方式css的属性名称可以用驼峰命名法camelCase或者使用短横线的方式（但是要将属性名称用单引号引起来）</div>
                 <div class="detail">
@@ -375,7 +375,257 @@
             </section>
         </div>
 
+        <div class="block">
+            <header>style的数组绑定方式</header>
+            <section class="content">
+                <div class="h">数组的绑定方式</div>
+                <div class="detail">
+                    <div :style="[outCssOne]">我是使用数组的方式绑定的样式</div>
+                </div>
+            </section>
+        </div>
 
+        <div class="block">
+            <header>当浏览器使用带有前缀的浏览器引擎类别css时，vue会自动识别并添加上</header>
+            <section class="content">
+                <div class="h">这方面vue帮我们做了很多的工作，但是在这方面的写法中我们还是需要注意的</div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>多重性</header>
+            <section class="content">
+                <div class="h">在对同一个css属性我们可以提供多个值，这样浏览器会根据不同的兼容性显示不同的值</div>
+                <div class="detail">
+                    <p>下面这个例子，我们以flex</p>
+                    <div :style="{display: ['flex', '-webkit-box', '-ms-flexbox']}">
+                        我是一个选择性综合征的对抗者,这里的属性值只会显示一个
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>条件渲染</header>
+            <section class="content">
+                <div class="h">其实在前面我们已经有过相关的实例如v-if，而且还简述了他与v-show的区别</div>
+                <div class="detail">
+                    <p>这里我们将会简单的使用v-if、v-else</p>
+                    <p>
+                        <span>尝试勾去复选框看看：</span>
+                        <input type="checkbox" v-model="ok">
+                    </p>
+                    <div v-if="ok">v-if的条件成立</div>
+                    <div v-else>
+                        v-if条件不成立
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>使用条件渲染分组</header>
+            <section class="content">
+                <div class="h">当我们想切换多个元素的时候我们可以用分组（将条件写在template上，在渲染的时候他并不会出现）</div>
+                <div class="detail">
+                    <p>这里我们将使用渲染分组</p>
+                    <p>
+                        <span>显示标准答案：</span>
+                        <input type="checkbox" v-model="ok">
+                    </p>
+                    <template v-if="ok">
+                        <ul>
+                            <li>锄禾日当午</li>
+                            <li>汗滴禾下土</li>
+                            <li>谁知盘中餐</li>
+                            <li>粒粒皆辛苦</li>
+                        </ul>
+                    </template>
+                    <div v-else>
+                        答案已隐藏，你可以勾选复悬框来查看
+                    </div>
+
+                    <br/>
+                    <p>
+                        除了v-if和v-else、还存在v-else-if，这里说明，所有的这些条件控制必须相邻，v-else必须跟在v-if或者v-else-if的后面
+                        这样他才能被正确的解析
+                    </p>
+                </div>
+            </section>
+        </div>
+
+
+        <div class="block">
+            <header>vue key管理可复用的元素</header>
+            <section class="content">
+                <div class="h">
+                    vue为了高效地渲染元素，通常会复用已经存在的元素，而不会从头开始渲染
+                    这样做还会保留用户的输入的内容
+                </div>
+                <div class="detail">
+                    <p>下面的案例中我们将使用分组渲染的方式来体现vue的高速渲染（切换用户登录的方式）</p>
+
+                    <template v-if="ok">
+                        <label>username</label>
+                        <input type="text" placeholder="请输入用户名称">
+                    </template>
+                    <template v-else>
+                        <label>useremail</label>
+                        <input type="text" placeholder="请输入用户邮箱">
+                    </template>
+
+                    <button @click="toggleInput">切换输入看看</button>
+
+                    <br/>
+                    <br/>
+                    <p>
+                        打开控制台，我们就可以看到DOM的改变只会改变label中的字段和input中的placeholder属性值；
+                        但是有时候我们并不需要这种复用，想完全地独立他们，那么我们就要加上一个具有为唯一属性的key,
+                        下面我们将举个栗子：
+                    </p>
+                    <template v-if="ok">
+                        <label>username</label>
+                        <input type="text" key="username-input" placeholder="请输入用户名称">
+                    </template>
+                    <template v-else>
+                        <label>useremail</label>
+                        <input type="text" key="useremail-input" placeholder="请输入用户邮箱">
+                    </template>
+
+                    <button @click="toggleInput">切换输入看看</button>
+
+                    <p>打开控制台我们可以很明显地看到input的标签有所变动，并且input中的数据并没有缓存</p>
+                </div>
+            </section>
+        </div>
+
+
+        <div class="block">
+            <header>v-if与v-show之间的区别</header>
+            <section class="content">
+                <div class="detail">
+                    <p>
+                    1、两者都算是条件渲染，但是v-if算是‘真正’的条件渲染；v-if根据条件对DOM进行渲染，条件成立才能渲染到界面上，而v-show是切换元素的display属性
+                    当条件成立的时候display为block，反之为none。
+                    </p>
+                    <p>
+                    2、v-if是<b>惰性</b>的，如果条件不成立的时候，它不会做任何的事情，只有当条件为真的时候才开始渲染条件块；而v-show不管,条件是否为真
+                    它始终会渲染元素
+                    </p>
+                    <p>
+                    3、通过上面的介绍，我们知道v-if有更高的切换开销，而v-show有更高的初始渲染开销；
+                    如果条件切换的比较频繁，那么可以选择v-show，如果条件切换不是很频繁，我们可以使用v-if的方式比较好
+                    </p>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>v-if与v-for一起使用</header>
+            <section class="content">
+                <div class="detail">
+                    <p>
+                        v-if与v-for一起使用的时候，v-for具有更高的优先级
+                    </p>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>数组的列表渲染v-for</header>
+            <section class="content">
+                <div class="h">
+                    v-for在上面的案例中我们也已经做过一定的介绍，v-for具有访问父级属性的权限，还支持一个可选的第二个参数为当前项的索引
+                </div>
+                <div class="detail">
+                    <p>此案例中我们将引用父级的属性并为当前项使用索引</p>
+                    <ul>
+                        <li v-for="(data, index) in datalist">
+                            {{ bindmessage }}--{{ data.name }}
+                            <hr/>
+                        </li>
+                    </ul>
+                    <br/>
+                    <p>上面的迭代，我们用的是v-for in的方式，当然他也可以使用v-for of的方式</p>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>对象的列表渲染v-for</header>
+            <section class="content">
+                <div class="h">
+                    对象的列表渲染可以接受三个参数
+                </div>
+                <div class="detail">
+                    <p>此案例中我们使用对象进行列表渲染</p>
+                    <ul>
+                        <li v-for="(data, key, index) of vForObjects">
+                            {{ index }}：当我们{{ key }}的时候，{{ data }}
+                            <hr/>
+                        </li>
+                    </ul>
+                    <br/>
+                    <p>上面的迭代，我们用的是v-for of的方式，当然他也可以使用v-for in的方式</p>
+                </div>
+            </section>
+        </div>
+
+
+
+        <div class="block">
+            <header>v-for的key（！！）</header>
+            <section class="content">
+                <div class="h">
+                    v-for在更新已经渲染的列表元素，它会采用”就地服用“的，如果数据的顺序改变了，它并不会更新列表的顺序，这样减少了渲染
+                </div>
+                <div class="detail">
+                    <p>
+                        下面的案例中我们只改变数据的顺序来看看是否顺序会不会发生改变
+                        <button @click="changeDataOrder">改变数据的顺序（我们这里只改变一次）</button>
+                    </p>
+                    <ul>
+                        <li v-for="data in vForObjects">
+                            当我们的时候，{{ data }}
+                            <hr/>
+                        </li>
+                    </ul>
+                    <br/>
+                    <b><span class="red">(额哦～，这里没有成功)</span>，文档中给出的解释是只是使用于不依赖子组件状态或临时DOM状态（例如：表单输入值）的列表的渲染输出</b>
+                    <p>为了让它重用或重新排序现有的元素，我们要跟踪每一个节点的身份，所以要提供一个key，即在循环元素上添加:key=“”</p>
+                </div>
+            </section>
+        </div>
+    
+        <div class="block">
+            <header>数组的更新检测(!!!!重要，否则在操作中数据可能不完整)</header>
+            <section class="content">
+                <div class="h">
+                    v-for在更新已经渲染的列表元素，它会采用”就地服用“的，如果数据的顺序改变了，它并不会更新列表的顺序，这样减少了渲染
+                </div>
+                <div class="detail">
+                    1.变异方法
+                    <p>vue中包含一组观察数组的变异方法，所以他们将会触发视图的更新(因为这些方法会改变原始的数组数据)</p>
+                    <u>
+                        <li>push()</li>
+                        <li>pop()</li>
+                        <li>shift()</li>
+                        <li>unshift</li>
+                        <li>splice</li>
+                        <li>sort()</li>
+                        <li>reverse()</li>
+                    </u>
+
+                    <br/>
+                    2.替换数组
+                    <p>存在非变异的方法，例如filter(), concat() 和 slice()，他们总是返回一个新的数组，使用这些非变异的方法可以用新数组代替老数组</p>
+
+                    <br/>
+                    3.
+                </div>
+            </section>
+        </div>
+        
 
 
 
@@ -410,10 +660,16 @@
                 borderColor: 'red',
                 borderStyle: 'solid'
             },
-            outCssTwo: {
+            outCssTwo: {//可以命名成borderStyle
                 'border-width': '2px',
                 'border-color': 'red',
                 'border-style': 'solid'
+            },
+            ok: true,
+            vForObjects: {
+                born: '世界的每一个角落是不一样的，我们的降临是幸运的',
+                young: '世界是美妙的，期待你发现的眼睛',
+                old: '人生或许去不了世界的每一个角落，但是有你的地方每时每刻都是不一样的'
             }
         };
         //对象的冻结，需要在Vue实例创建之前，这样数据的改变就不会更新在视图上了（readonly）,这里为了实时更新我们就注释掉这个功能点了
@@ -478,7 +734,17 @@
                 },
                 freezeData: function() {
                     Object.freeze(data);
-                }
+                },
+                toggleInput: function() {
+                    this.ok = !this.ok;
+                },
+                changeDataOrder: function() {
+                    this.vForObjects = {
+                        young: '世界是美妙的，期待你发现的眼睛',
+                        born: '世界的每一个角落是不一样的，我们的降临是幸运的',
+                        old: '人生或许去不了世界的每一个角落，但是有你的地方每时每刻都是不一样的'
+                    };
+                },
             }
         });
 
