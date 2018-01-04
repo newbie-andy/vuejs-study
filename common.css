@@ -73,4 +73,9 @@ button[disabled] {
 .bgli {
     background: #ccc;
 }
+.student {
+    border: 1px slategray double;
+    margin-bottom: 20px;
+    padding: 10px;
+}
 

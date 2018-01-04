@@ -684,47 +684,87 @@
         </div>
 
         <div class="block">
-                <header>对象更改的检测注意事项（！！）</header>
-                <section class="content">
-                    <div class="h">
-                        我们可能在逻辑处理的过程中需要改变数据原（对象的）的属性，如果是之前没有的属性值我们要实时检测并更新到视图上
-                    </div>
-                    <div class="detail">
-                        <p>
-                            其实在之前的实例中我们有相关沾边的案例，我们想用Vue自身的数据去初始化另一条它的数据，
-                            但是在data中我们获取不到vue实例，所以就在computer中进行了计算初始化，使它刚开始调用的视乎就初始化；
-                            然而并不是所有的对象数据都是在一开始的时候我们就初始化，那么我们怎么解决呢？
-                        </p>
-                        <ul>
-                            <li>
-                                <p>通过Vue中自带的全局Vue.set()方法或者使用实例的vm.$set()的方法对对象数据进行添加</p>
-                                <div>
-                                    <p>案例1(单个属性的变化)：</p>
-                                    <p>
-                                        <button @click="addNewObjectItemOne">新的对象属性</button>
-                                        <div :style="outCssOne">
-                                            点击上面的按钮，看看我有什么变化(这里第一次为新添加的，后面我们只是改变它的值而已)
-                                        </div>
-                                    </p>
-                                    <br/>
-                                    <p>案例1(单个属性的变化)：</p>
-                                    <p>
-                                        <button @click="addNewObjectItemOne">新的对象属性</button>
-                                        <div :style="outCssOne">
-                                            点击上面的按钮，看看我有什么变化(这里第一次为新添加的，后面我们只是改变它的值而已)
-                                        </div>
-                                    </p>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </section>
-            </div>
-        
+            <header>对象更改的检测注意事项（！！）</header>
+            <section class="content">
+                <div class="h">
+                    我们可能在逻辑处理的过程中需要改变数据原（对象的）的属性，如果是之前没有的属性值我们要实时检测并更新到视图上
+                </div>
+                <div class="detail">
+                    <p>
+                        其实在之前的实例中我们有相关沾边的案例，我们想用Vue自身的数据去初始化另一条它的数据，
+                        但是在data中我们获取不到vue实例，所以就在computer中进行了计算初始化，使它刚开始调用的视乎就初始化；
+                        然而并不是所有的对象数据都是在一开始的时候我们就初始化，那么我们怎么解决呢？
+                    </p>
+                    <ul>
+                        <li>
+                            <p>通过Vue中自带的全局Vue.set()方法或者使用实例的vm.$set()的方法对对象数据进行添加</p>
+                            <div>
+                                <p>案例1(单个属性的变化)：</p>
+                                <p>
+                                    <button @click="addNewObjectItemOne">（一个）新的对象属性</button>
+                                    <div :style="outCssOne">
+                                        点击上面的按钮，看看我有什么变化(这里第一次为新添加的，后面我们只是改变它的值而已)
+                                    </div>
+                                    <p>打开控制台我们可以看到color属性已经被添加进行去了</p>
+                                </p>
+                                <br/>
+                                <p>案例2(多个属性的变化)：</p>
+                                <p>
+                                    <button @click="addNewObjectItemTwo">（多个）新的对象属性</button>
+                                    <div :style="outCssOne">
+                                        点击上面的按钮，看看我有什么变化(这里第一次为新添加的，后面我们只是改变它的值而已)
+                                    </div>
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+
+        <div class="block">
+            <header>显示过滤排序结果</header>
+            <section class="content">
+                <div class="h">
+                    我们有时候需要的并不是原本的数组元素，而是数组的副本(经过筛选或者排序)元素
+                </div>
+                <div class="detail">
+                    <p>
+                        1.我们可以使用计算属性(这里我们过滤出能被3整除的数据)
+                    </p>
+                    <ul>
+                        <li v-for="item of filterItems">{{ item }}</li>
+                    </ul>
+
+                    <br/>
+                    <p>
+                        2.但是对于嵌套的v-for循环我们要把数据从父亲哪里传给下面的元素
+                    </p>
+                    <ul>
+                        <li>2017年本班学生成绩报表(不透露学生的具体成绩)</li>
+                        <li v-for="(item, key, index) in students" class="student">
+                            <p><span>姓名：</span>{{ item.name }}</p>
+                            <ol>
+                                <li>学生成绩（只提示学生的及格与否，不透露学生的成绩）</li>
+                                <li v-for="grade in chengeGrade(item.grades)">
+                                    <p>{{ `学科：${grade.subject}, 及格与否：${grade.ispass}`  }}</p>
+                                    <p></p>
+                                </li>
+                            </ol>
+                            <p>{{ `老师寄语： ${item.name}, ${item.comment}` }} </p>
+                        </li>
+                    </ul>
+                    <br/>
+                    <p>上面为什么会用methods呢？因为在循环到嵌套的v-for之前，我们根本不知道item.grade是谁，所以是能待它出现的时候我们才会去处理他</p>
+                </div>
+            </section>
+        </div>
+    
 
 
 
-        
+    
     </div>
     <script src='./components/BasicComponent.js'></script>
     <script>
@@ -767,6 +807,30 @@
                 old: '人生或许去不了世界的每一个角落，但是有你的地方每时每刻都是不一样的'
             },
             testArrays: ['孙悟空','猪八戒','沙和尚','白龙马'],
+            items: [0,1,2,3,4,5,6,7,8,9],
+            subjects: ['语文', '数学', '英语', '生物', '化学'],
+            students: [
+                {
+                    name:'张烁',
+                    grades: [80,30,70,95,50],
+                    comment: '2018，继续加油！'
+                },
+                {
+                    name:'王峰',
+                    grades: [40,60,70,95,66],
+                    comment: '2018，继续加油！'
+                },
+                {
+                    name:'方世齐',
+                    grades: [89,60,59,95,66],
+                    comment: '2018，继续加油！'
+                },
+                {
+                    name:'赵争',
+                    grades: [89,60,69,95,66],
+                    comment: '2018，继续加油！'
+                }
+            ]
         };
         //对象的冻结，需要在Vue实例创建之前，这样数据的改变就不会更新在视图上了（readonly）,这里为了实时更新我们就注释掉这个功能点了
         //Object.freeze(data);
@@ -803,6 +867,11 @@
                         'border-style': 'solid'
                     };
                 },
+                filterItems: function() {
+                    return this.items.filter(function(item) {
+                        return item % 3 ===0;
+                    })
+                }
             },
             methods: {
                 toggle: function() {
@@ -901,8 +970,42 @@
                     console.log(app.outCssOne);
                     console.log(this.outCssOne)
                 },
+                addNewObjectItemTwo: function() {
+                    let red = this.randomFunc();
+                    let green = this.randomFunc();
+                    let blue = this.randomFunc();
+                    let color = `rgb(${red},${green},${blue})`;
+                    //这里采用对象合并的方式，
+                    //Object.assign()
+                    this.outCssOne = Object.assign({},this.outCssOne,{
+                        'color': color,
+                        backgroundColor: '#fff'//这里我们就不动态了，你可以自行创建动态
+                    });
+
+
+
+                    //这里需要注意一点就是我们并没有使用直接合并给目标对象的方式(这种方式文档指出不正确)（！！！！！）
+                    //但是这里我们也要进行尝试(确实不行)
+                    // Object.assign(this.outCssOne,{
+                    //     'color': color,
+                    //     backgroundColor: '#fff'//这里我们就不动态了，你可以自行创建动态
+                    // })
+
+                    console.log(this.outCssOne)
+                },
                 randomFunc: function() {
                     return Math.ceil(Math.random() * 255);
+                },
+                chengeGrade: function(grades) {
+                    let _that = this;
+                    var changedGrade = grades.map(function(v, index) {
+                        v = v > 60 ? '及格' : '不及格';
+                        return {
+                            'subject': _that.subjects[index],
+                            'ispass': v
+                        };
+                    });
+                    return changedGrade;
                 } 
 
             }
