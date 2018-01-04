@@ -621,10 +621,105 @@
                     <p>存在非变异的方法，例如filter(), concat() 和 slice()，他们总是返回一个新的数组，使用这些非变异的方法可以用新数组代替老数组</p>
 
                     <br/>
-                    3.
+                    3.注意事项
+                    <p>由于javascript的限制，我们不能直接通过索引直接设置一项</p>
+                    <p>如： vm.items[indexOfItem] = newValue</p>
+                    <p>我们也不能直接修改数组的长度</p>
+                    <p>例如： vm.items.length = newLength</p>
+                    <p>官网给出的说法是不能检测到（不知道是不能实时响应，还是不能实现添加的效果，根
+                        据原生的情况个人猜测是可以添加上去的，但是数据不能实时更新到视图上而已，毕竟vue是实时响应），
+                        但是其相关的值是否发生改变，下面的实例中我们一起来探讨</p>
+                    <br/>
+                    <div>
+                        <p>面对第一个问题，我们有两种方式解决：</p>
+                        <ul>
+                            <li>
+                                1.通过Vue的set()方法：Vue.set(vm.items, indexOfItems, newItem)
+                            </li>
+                            <li>
+                                1.另一种就是通过原始的splice方式：vm.splice(indexOfItems, 1, newItem)
+                            </li>
+                        </ul>
+                        <br/>
+                        <p>下面我们将使用错误的方式和正确的方式进行演示一遍</p>
+                        <div>
+                            <section>
+                                <p><button @click="errorAddItemToArrayByIndex">错误的方式:点击之后查看控制台的输出结果（添加新的一项）</button></p>
+                                <ul>
+                                    <li v-for="(item, index) of testArrays">
+                                        {{ index }}----{{ item }}
+                                    </li>
+                                </ul>
+                                <p>通过控制台我们清晰的看到，数组中是存在新添加的数据的，但是没有更新到视图上面去,可以将逻辑放到computed中，但是那样在页面加载的时候会自动调用一次</p>
+                                <br/>
+                                <p><button @click="errorChangeArrayLength">错误的方式:点击之后查看控制台的输出结果（改变数组的长度）</button></p>
+                                <ul>
+                                    <li v-for="(item, index) of testArrays">
+                                        {{ index }}----{{ item }}
+                                    </li>
+                                </ul>
+                            </section>
+                            <br/>
+                            <section>
+                                <p><button @click="addItemToArrayByIndex">正确的方式:点击之后查看控制台的输出结果（添加新的一项）</button></p>
+                                <ul>
+                                    <li v-for="(item, index) of testArrays">
+                                        {{ index }}----{{ item }}
+                                    </li>
+                                </ul>
+                                <p>通过控制台我们清晰的看到，数组中是存在新添加的数据的，并且数据及时的渲染到了页面上</p>
+                                <br/>
+                                <p><button @click="changeArrayLength">错误的方式:点击之后查看控制台的输出结果（改变数组的长度）</button></p>
+                                <ul>
+                                    <li v-for="(item, index) of testArrays">
+                                        {{ index }}----{{ item }}
+                                    </li>
+                                </ul>
+                                <p>我们可以看到当我们改变了数组的长度后，空的数据就及时地反馈到了页面（当新数组的长度大于当前的并没有添加新的值，小于的时候减少了）</p>
+                            </section>
+                        </div>
+                    </div>
                 </div>
             </section>
         </div>
+
+        <div class="block">
+                <header>对象更改的检测注意事项（！！）</header>
+                <section class="content">
+                    <div class="h">
+                        我们可能在逻辑处理的过程中需要改变数据原（对象的）的属性，如果是之前没有的属性值我们要实时检测并更新到视图上
+                    </div>
+                    <div class="detail">
+                        <p>
+                            其实在之前的实例中我们有相关沾边的案例，我们想用Vue自身的数据去初始化另一条它的数据，
+                            但是在data中我们获取不到vue实例，所以就在computer中进行了计算初始化，使它刚开始调用的视乎就初始化；
+                            然而并不是所有的对象数据都是在一开始的时候我们就初始化，那么我们怎么解决呢？
+                        </p>
+                        <ul>
+                            <li>
+                                <p>通过Vue中自带的全局Vue.set()方法或者使用实例的vm.$set()的方法对对象数据进行添加</p>
+                                <div>
+                                    <p>案例1(单个属性的变化)：</p>
+                                    <p>
+                                        <button @click="addNewObjectItemOne">新的对象属性</button>
+                                        <div :style="outCssOne">
+                                            点击上面的按钮，看看我有什么变化(这里第一次为新添加的，后面我们只是改变它的值而已)
+                                        </div>
+                                    </p>
+                                    <br/>
+                                    <p>案例1(单个属性的变化)：</p>
+                                    <p>
+                                        <button @click="addNewObjectItemOne">新的对象属性</button>
+                                        <div :style="outCssOne">
+                                            点击上面的按钮，看看我有什么变化(这里第一次为新添加的，后面我们只是改变它的值而已)
+                                        </div>
+                                    </p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
         
 
 
@@ -670,7 +765,8 @@
                 born: '世界的每一个角落是不一样的，我们的降临是幸运的',
                 young: '世界是美妙的，期待你发现的眼睛',
                 old: '人生或许去不了世界的每一个角落，但是有你的地方每时每刻都是不一样的'
-            }
+            },
+            testArrays: ['孙悟空','猪八戒','沙和尚','白龙马'],
         };
         //对象的冻结，需要在Vue实例创建之前，这样数据的改变就不会更新在视图上了（readonly）,这里为了实时更新我们就注释掉这个功能点了
         //Object.freeze(data);
@@ -706,7 +802,7 @@
                         'border-color': 'red',
                         'border-style': 'solid'
                     };
-                }
+                },
             },
             methods: {
                 toggle: function() {
@@ -745,6 +841,70 @@
                         old: '人生或许去不了世界的每一个角落，但是有你的地方每时每刻都是不一样的'
                     };
                 },
+                addItemToArrayByIndex: function() {
+                    //针对用户自定义数组的下标
+                    //方式1：
+                    //Vue.set(this.testArrays, 4, '我是唐僧，请拒绝吃唐僧肉');
+
+                    //方式二：
+                    this.testArrays.splice(4, 1, '我是唐僧，请拒绝吃唐僧肉');
+                    console.log(this.testArrays);
+                },
+                changeArrayLength: function() {
+                    //方式1
+                    //这里我们改变数组的长度
+                    this.testArrays.splice(2);//这个好像有点问题，这里值如果下于当前数组的值是有效的，但是如果大于并没有添加值
+                    console.log(this.testArrays.length);
+                    console.log(this.testArrays);
+                    this.testArrays.forEach(function(v, index) {
+                        if(v==='undefined') {
+                            console.log('undefined');
+                        }else{
+                            console.log(v);
+                        }
+                    })
+                    //以上的写法并没有打到我们想要的（打印出undefined），但是我们可以清楚的看到有6个值的产生
+                },
+                errorAddItemToArrayByIndex: function() {
+                    //这里我们在数组中通过下标的方式添加新的一项内容
+                    this.testArrays[4] = '我是唐僧';
+                    //这里我们可以看看数据是否添加上去了:
+                    console.log(this.testArrays);
+                    //在上面我们可以看看是否数据已经实时显示到页面
+                },
+                errorChangeArrayLength: function() {
+                    //这里我们改变数组的长度
+                    this.testArrays.length = 6;
+                    console.log(this.testArrays);
+                    this.testArrays.forEach(function(v, index) {
+                        if(v==='undefined') {
+                            console.log('undefined');
+                        }else{
+                            console.log(v);
+                        }
+                    })
+                    //以上的写法并没有打到我们想要的（打印出undefined），但是我们可以清楚的看到有6个值的产生
+                },
+                addNewObjectItemOne: function() {
+                    //这里我们通过全局的Vue.set()来实现
+                    let red = this.randomFunc();
+                    let green = this.randomFunc();
+                    let blue = this.randomFunc();
+                    let color = `rgb(${red},${green},${blue})`;
+                    console.log(color);
+
+                    //Vue.set(this.outCssOne,'color',color);
+
+                    //这里我们通过实例的app.$set()方法来添加属性
+                    app.$set(this.outCssOne,'color',color);
+
+                    console.log(app.outCssOne);
+                    console.log(this.outCssOne)
+                },
+                randomFunc: function() {
+                    return Math.ceil(Math.random() * 255);
+                } 
+
             }
         });
 
