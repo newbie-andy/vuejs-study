@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>component</title>
+    <link rel="stylesheet" href="./common.css" >
+    <script src="./vue.js"></script>
+</head>
+<body>
+
+        
+    <div id="component">
+        <div class="block">
+            <header>全局注册组件</header>
+            <section class="content">
+                <div class="h">
+                    在上一章节的内容中，我们已经使用过组件的方式进行渲染,这里介绍全局的组件注册
+                    Vue.component()的形式
+                </div>
+                <div class="detail">
+                    这里我们还是引用上面已经创建的全局组件
+                    <component-name></component-name>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>局部注册组件</header>
+            <section class="content">
+                <div class="h">
+                    我们也可以通过Vue实例或者组件的实例选项components来注册仅在它的
+                    作用域中使用的组件
+                </div>
+                <div class="detail">
+                    这里我们创建的局部组件
+                    <component-jubu></component-jubu>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>data必须是函数</header>
+            <section class="content">
+                <div class="h">
+                    在构建实例的时候，实例中组件的大部分数据是在组件中初始化的，但是这里的数据源必须用
+                    函数的形式，否则会报错，这是vue的规则，当然这也是有好处的，下面的例子中我们将会演示
+                </div>
+                <div class="detail">
+                    <component-counter></component-counter>
+                    <component-counter></component-counter>
+                    <component-counter></component-counter>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>props的命名方式短线/驼峰</header>
+            <section class="content">
+                <div class="h">
+                    当你使用的不是字符串模板的时候，驼峰命名的props要转内化成短线连接式的，否则不影响
+                </div>
+                <div class="detail">
+                    <ul>
+                        <li>2017年本班学生成绩报表(不透露学生的具体成绩)</li>
+                        <li 
+                            is="component-student"
+                            v-for="(item, key, index) in students"
+                            :student-item="item"
+                            class="student">
+                        </li>
+                    </ul>
+                    <br/>
+                    <p>
+                        上面的案例中component-student的组件我们使用是非模板字符串所以在传props的时候我们要把驼峰命名的studentItem改成
+                        短线命名的student-item；而在component-student组件中我们使用的component-grade组件是嵌入在component-student中的字符串模板
+                        所以我们可以用驼峰的studentGrade作为props
+                    </p>
+                </div>
+            </section>
+        </div>
+
+
+    </div>
+    <script src="./components/BasicComponent.js"></script>
+    <script>
+        let data = {
+            students: [
+                {
+                    name:'张烁',
+                    grades: [80,30,70,95,50],
+                    comment: '2018，继续加油！'
+                },
+                {
+                    name:'王峰',
+                    grades: [40,60,70,95,66],
+                    comment: '2018，继续加油！'
+                },
+                {
+                    name:'方世齐',
+                    grades: [89,60,59,95,66],
+                    comment: '2018，继续加油！'
+                },
+                {
+                    name:'赵争',
+                    grades: [89,60,69,95,66],
+                    comment: '2018，继续加油！'
+                }
+            ],
+        };
+        var app = new Vue({
+            el: '#component',
+            components: {
+                'component-jubu': Jubu
+            },
+            data() {
+                return data;
+            },
+            computed: {
+
+            },
+            methods: {
+
+            },
+        })
+    </script>
+</body>
+</html>

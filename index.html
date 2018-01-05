@@ -933,6 +933,104 @@
             </section>
         </div>
 
+        <div class="block">
+            <header>表单输入绑定基本绑定</header>
+            <section class="content">
+                <div class="h">
+                    这里我们介绍一些常用的绑定方式
+                </div>
+                <div class="detail">
+                    <u>
+                        <li>
+                            <p>单个复选框</p>
+                            <div>
+                                <input type="checkbox" v-model="single"/>
+                                值：<span>{{ single }}</span>
+                            </div>
+                            <p>其实上面的案例中我们也有介绍过相关操作的</p>
+                        </li>
+                        <li>
+                                <br/>
+                            <p>多个复选框,勾选下面的复选框，我们可以看到勾选的值</p>
+                            <div>
+                                <p>应用场景：你去过一下那些城市</p>
+                                <template v-for="item in datalist">
+                                    <div>
+                                        <input type="checkbox" :value="item" v-model="singles"/>
+                                        <span>{{ item.name }}</span>
+                                    </div>
+                                </template>
+                                我去过：<span>{{ singles }}</span>
+                            </div>
+                        </li>
+                        <li>
+                            <br/>
+                            <p>单选使用：</p>
+                            <input type="radio" value="male" v-model="sex"/>
+                            <input type="radio" value="female" v-model="sex"/>
+                            <p>
+                                你的性别是： {{ sex }}
+                            </p>
+                        </li>
+                        <li>
+                            <br/>
+                            <p>选择框的使用使用：</p>
+                            <div>
+                                选择框的使用在上面的案例中我们也已经使用过，还有多选的情况，
+                                特别提醒：在ios上如果选择的项不配配任何一个，那么我们需要在第一个选项前加一个value置空的disabled选项，这样第一个选项才能
+                                被选中
+                            </div>
+
+                        </li>
+
+                        <li>
+                            <br/>
+                            <p>另一种形式的复选框</p>
+                            <div>
+                                <input
+                                    type="checkbox"
+                                    v-model="toggle"
+                                    true-value="yes"
+                                    false-value="no"/>
+                                <span>{{ toggle }}</span>
+                            </div>
+
+                        </li>
+                        <li>
+                            <p>另一种形式的单选按钮</p>
+                            <div>
+                                <input type="radio" v-model="pick" v-bind:value="toggle">
+                            </div>
+                        </li>
+                    </u>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>修饰符</header>
+            <section class="content">
+                <div class="h">
+                    .lazy修饰符
+                </div>
+                <div class="detail">
+                    <p>
+                        vue默认情况下，在每次输入的时候都会触发input事件，我们可以使用.lazy修饰符（改为change事件）在其值改变的
+                        才会同步到视图上(最后加上回车键)
+                    </p>
+                    <div>
+                        <input type="text" v-model.lazy="lazy" />
+                        <p>{{ lazy }}</p>
+                    </div>
+                    <br/>
+                    <p>
+                        除了上面的处理之外，还有.number和.trim修饰符，分别是把输入的内容返回成数字和去掉输入内容的
+                        首尾空字符
+                    </p>
+                </div>
+            </section>
+        </div>
+
 
     
 
@@ -1042,6 +1140,12 @@
                 '.left',
                 '.right'
             ],
+            single: false,
+            singles: [],
+            sex: '',
+            toggle: 'yes',
+            pick: '',
+            lazy: ''
         };
         //对象的冻结，需要在Vue实例创建之前，这样数据的改变就不会更新在视图上了（readonly）,这里为了实时更新我们就注释掉这个功能点了
         //Object.freeze(data);
