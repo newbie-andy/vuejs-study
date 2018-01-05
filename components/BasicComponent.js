@@ -18,3 +18,10 @@ Vue.component('class-component',{
     template: `<div class="hide">我是class-component组件，我在使用{{ classtype }}</div>`,
 })
 
+Vue.component('todo-item', {
+    props: ['title'],
+    template: `<li>
+                {{ title }}
+                <button @click="$emit('remove')">删除</button>
+               </li>`
+})
