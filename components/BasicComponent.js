@@ -63,6 +63,16 @@ Vue.component('component-grade',{
     template: `<li>
                    <p>学科：{{studentGrade.subject}} 及格与否：{{ studentGrade.ispass }}</p>
                </li>`,
+});
+Vue.component('component-todo',{
+    props: ['name','isComplete'],
+    template: `<div>
+                  <p>
+                    {{ name }}
+                  </p>
+                  <span>是否完成任务</span>
+                  <input type="checkbox" v-model="isComplete"/>
+               </div>`
 })
 
 var Jubu = {

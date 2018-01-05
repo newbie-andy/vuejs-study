@@ -62,13 +62,30 @@
                     当你使用的不是字符串模板的时候，驼峰命名的props要转内化成短线连接式的，否则不影响
                 </div>
                 <div class="detail">
-                    <ul>
-                        <li>2017年本班学生成绩报表(不透露学生的具体成绩)</li>
+                    <p>
+                        案例场景：查询本班学生的成绩单，用户输入要查询用户的用户名称即可查询
+                    </p>
+                    <br/>
+                    <ul class="student">
+                        <li>2017年本班学生成绩查询(不透露学生的具体成绩)</li>
+                        <li>
+                            <br/>
+                            <span>请输入学生姓名：</span>
+                            <input type="text" @keyup="filterStudent" v-model="inputstudent">
+                            <br/>
+                        </li>
                         <li 
                             is="component-student"
-                            v-for="(item, key, index) in students"
+                            v-for="(item, key, index) in getStudent"
                             :student-item="item"
                             class="student">
+                        </li>
+                        <li v-if="!!!getStudent.length">
+                            <br/>
+                            <p class="red">请在输入框中完全名字才可以查到成绩单</p>
+                        </li>
+                        <li class="green" v-else>
+                            查询成功！
                         </li>
                     </ul>
                     <br/>
@@ -78,6 +95,27 @@
                         所以我们可以用驼峰的studentGrade作为props
                     </p>
                 </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>当我们如果想把对象整个作为props进行传递，那么我们可以省略bind后面的参数</header>
+            <section class="content">
+                <div class="h">
+                    <p>这里这一个假设我们有对象todo为todo = { name: 'todo', isComplete: false }</p>
+                    <p>那么我们可以这样做v-bind='todo',Vue会自动将对象中的属性作为props绑定在元素或组件上</p>
+                    <p>
+                        如：v-bind:name="todo.name"，v-bind:is-complete="todo.isComplete"
+                    </p>
+                </div>
+                <div class="detail">
+                   <component-todo v-bind="todo"></component-todo>
+                </div>
+                <br/>
+                <p>
+                    从上面的示例来看，我们的传递的props为整个对象，但是我们在组件中得到的还是分散的数据（vue是将对象中的属性传递
+                    给我们，并不是整个对象）
+                </p>
             </section>
         </div>
 
@@ -108,6 +146,12 @@
                     comment: '2018，继续加油！'
                 }
             ],
+            getStudent:[],
+            inputstudent: '',
+            todo: {
+                name: 'zhangsan',
+                isComplete: true
+            }
         };
         var app = new Vue({
             el: '#component',
@@ -121,7 +165,12 @@
 
             },
             methods: {
-
+                filterStudent: function() {
+                    let _that = this;
+                    this.getStudent = this.students.filter(function(v, index) {
+                        return v.name==_that.inputstudent ? v : null;
+                    });
+                }
             },
         })
     </script>

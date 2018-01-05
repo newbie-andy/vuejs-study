@@ -70,6 +70,10 @@ button[disabled] {
     color: red;
 }
 
+.green {
+    color: #19b385;
+}
+
 .bgli {
     background: #ccc;
 }
