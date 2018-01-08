@@ -96,4 +96,23 @@ Vue.component('component-counter', {
             this.count++;
         }
     }
+});
+
+Vue.component('button-counter', {
+    template: `<button v-on:click="countFun">{{ count }}</button>`,
+    data() {
+        return {
+            count: 0
+        }
+    },
+    methods: {
+        countFun: function() {
+            this.count++;
+            this.$emit('increme');//向父级报告情况
+        }
+    }
+});
+
+Vue.component('component-nativeevent', {
+    template: `<button>Do yourself</button>`
 })

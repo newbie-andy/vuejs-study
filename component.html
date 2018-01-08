@@ -119,6 +119,128 @@
             </section>
         </div>
 
+        <div class="block">
+            <header>props的单向数据流</header>
+            <section class="content">
+                <div class="h">
+                   <p>
+                       单向数据流，在父级中数据变化的时候传递给子级中的每一个组件
+                       这样做父级中的数据变化会及时的更新到子级的各个组件中；所以这样一来我们就不能随意的改变
+                       父级中的数据（父级通过props传入的），以免导致数据流变得紊乱。
+                       一般我们把props中的数据分成两种来看
+                   </p>
+                   <ul>
+                       <li>
+                           1.作为初始的数据传入，这样的数据一般可能也在初始化其他的组件，所以我们不能改变它的真实
+                           值，所以只能拿他当做组件中的局部变量来使用，所以我们可以给组件新创建一个数据属性并用它进行初始化
+                       </li>
+                       <li>
+                           2.另一种就是作为原始数据传入，为了及时在页面中渲染我们可以使用计算属性，这样我们既能处理自己想要的
+                           数据格式也能及时和实时地响应到页面中
+                       </li>
+                   </ul>
+                </div>
+                <div class="detail">
+                    这里我们不在做详细的案例介绍，官方文档中已经有很好的案例
+                    <a href="https://cn.vuejs.org/v2/guide/components.html#单向数据流">传送门</a>
+                </div>
+                
+            </section>
+        </div>
+
+        <div class="block">
+            <header>props数据验证</header>
+            <section class="content">
+                <div class="h">
+                   <p>
+                        在组件实例未创建之前我们可以对props的数据进行验证，这时候我们要使用对象的形式而非字符串数组
+                   </p>
+                </div>
+                <div class="detail">
+                    <p>
+                        由于验证是在组件实例创建之前进行就进行验证的所以默认值函数default和自定义验证函数validator中不能
+                        使用组件中的data\computed\methods等属性
+                    </p>
+                    <a href="https://cn.vuejs.org/v2/guide/components.html#prop数据验证">传送门</a>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>非prop特性</header>
+            <section class="content">
+                <div class="h">
+                   <p>
+                        这里的非prop特性是：它可以直接传递个组件而不通过props,就像传统的元素特性一样，他会直接的添加在组件的
+                        根节点上
+                   </p>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>替换合并现有的特性</header>
+            <section class="content">
+                <div class="h">
+                   <p>
+                        对于大多数的特性来说，传递给组件的特性会覆盖组件自身定义的特性，这样会照成数据的遗失，
+                        但是对于style和class特性vue可以将组件和自身的属性合并，这样对于开发者来说更加友好
+                   </p>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>$on监听事件，$emit触发事件</header>
+            <section class="content">
+                <div class="h">
+                   <p>
+                      监听在父级，子级进行触发
+                   </p>
+                </div>
+                <div class="detail">
+                    <p>父级监听子组件的触发:{{ total }}</p>
+                    <button-counter 
+                        v-on:increme="couterTotal"></button-counter>
+                    <button-counter 
+                        v-on:increme="couterTotal"></button-counter>
+                    <br/>
+                    <p>
+                        上面案例中父子组件之间完全解耦了，
+                        子组件在处理自身业务逻辑的同时将父组件关心的事情（这里通过事件）
+                        传递给父组件
+                    </p>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>给组件绑定原生的事件</header>
+            <section class="content">
+                <div class="h">
+                   <p>
+                      通过给v-on添加.native给组件添加原生的事件
+                   </p>
+                </div>
+                <div class="detail">
+                    <component-nativeevent v-on:click.native="doYourSelf"></component-nativeevent>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>.sync语法（双向绑定）的使用</header>
+            <section class="content">
+                <div class="h">
+                   <p>
+                      .sync语法的使用在Vue1.x中就已经添加，但是后来因为其会修改父组件中的状态值所以在后来剔除了，但是在2.0中作者发现还是有其运用的价值所以又加上了
+                   </p>
+                </div>
+                <div class="detail">
+                    <component-nativeevent v-on:click.native="doYourSelf"></component-nativeevent>
+                </div>
+            </section>
+        </div>
 
     </div>
     <script src="./components/BasicComponent.js"></script>
@@ -151,7 +273,8 @@
             todo: {
                 name: 'zhangsan',
                 isComplete: true
-            }
+            },
+            total: 0,
         };
         var app = new Vue({
             el: '#component',
@@ -170,6 +293,12 @@
                     this.getStudent = this.students.filter(function(v, index) {
                         return v.name==_that.inputstudent ? v : null;
                     });
+                },
+                couterTotal: function() {
+                    this.total++;//父级监听情况
+                },
+                doYourSelf: function() {
+                    alert('Do yourself!');
                 }
             },
         })
