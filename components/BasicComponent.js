@@ -117,6 +117,48 @@ Vue.component('component-nativeevent', {
     template: `<button>Do yourself</button>`
 })
 
+
+Vue.component('component-sync', {
+    template: `<button @click="syncFun">点击看看foo的值是否改变</button>`,
+    methods: {
+        syncFun: function() {
+            this.$emit('update:foo', 'hello shuozhang!');
+        }
+    }
+})
+
+var bus = new Vue();
+
+Vue.component('component-china', {
+    template:`<div>
+        <p>我来自中国</p>
+        <button @click="communicate">点击我，来联系美国朋友</button>
+    </div>`,
+    methods: {
+        communicate: function() {
+            bus.$emit('changePerson',{name: 'shuozhang'});
+        }
+    }
+})
+
+Vue.component('component-american', {
+    data() {
+        return {
+            person: ''
+        }
+    },
+    template:`<div>
+        <p>我来自美国</p>
+        <p>你好，{{ person }}</p>
+    </div>`,
+    created() {
+        var _that = this;
+        bus.$on('changePerson', function(data) {
+                _that.person = data.name;
+        })
+    }
+})
+
 Vue.component('component-ref', {
     data() {
         return {

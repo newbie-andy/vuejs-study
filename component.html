@@ -233,11 +233,47 @@
             <section class="content">
                 <div class="h">
                    <p>
-                      .sync语法的使用在Vue1.x中就已经添加，但是后来因为其会修改父组件中的状态值所以在后来剔除了，但是在2.0中作者发现还是有其运用的价值所以又加上了
+                      .sync语法的使用在Vue1.x中就已经添加，但是后来因为其会修改父组件中的状态值所以在后来剔除了，
+                      但是在2.0中作者发现还是有其运用的价值所以又加上了(作者的解释为为了让在子组件改变父组件状态的代码更容易被区分)
                    </p>
                 </div>
                 <div class="detail">
-                    <component-nativeevent v-on:click.native="doYourSelf"></component-nativeevent>
+                    {{ bar }}
+                    <component-sync :foo.sync="bar"></component-sync>
+                    <p>相当于下下面的组件</p>
+                    <component-sync :foo="bar" @update:foo="val=>bar=val"></component-sync>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>自定义组件的v-model(!!!!一些输入数据的处理逻辑的自定义)</header>
+            <section class="content">
+                <div class="h">
+                    <p>
+                        这里不做过多解释，感觉还要多看看这部分的文档（对于text类型的input和checkbox等类型的input它们的触发事件和绑定值有所不同所以对于checkbox类型
+                        的数据我们需要提供model选项来不免不必要的冲突）
+                    </p>
+                </div>
+                <div class="detail">
+                  
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>非父子组件之间的通讯</header>
+            <section class="content">
+                <div class="h">
+                    <p>
+                        Vue中我们并不是实时都通过父子组件进行通讯，对于非父子组件的通讯，我们可以把vue看成一个大树，大树是有根的，不同树杈之间我们可以通过它们的公共部分来
+                        进行传递数据，这里我们用Vue顶层实例来做案例
+                    </p>
+                </div>
+                <div class="detail">
+                    <p>下面是两个组件（非父子组件关系）</p>
+                    <component-china></component-china>
+                    <component-american></component-american>
                 </div>
             </section>
         </div>
@@ -363,11 +399,12 @@
                 isComplete: true
             },
             total: 0,
+            bar: 'hello',
         };
         var app = new Vue({
             el: '#component',
             components: {
-                'component-jubu': Jubu
+                'component-jubu': Jubu,
             },
             data() {
                 return data;
