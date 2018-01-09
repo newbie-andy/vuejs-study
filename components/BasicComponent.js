@@ -116,3 +116,17 @@ Vue.component('button-counter', {
 Vue.component('component-nativeevent', {
     template: `<button>Do yourself</button>`
 })
+
+Vue.component('component-ref', {
+    data() {
+        return {
+            name: '说长'
+        }
+    },
+    template:`<p>我是一个子组件实例在测试ref子组件引用,{{ name }}</p>`,
+});
+
+Vue.component('component-li', {
+    props: ['student'],
+    template: `<li>{{ student.name }}</li>`,
+})

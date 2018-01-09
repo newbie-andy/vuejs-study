@@ -242,10 +242,98 @@
             </section>
         </div>
 
+        <div class="block">
+            <header>插槽solt</header>
+            <section class="content">
+                <div class="h">
+                   <p>
+
+                   </p>
+                </div>
+                <div class="detail">
+                    
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>动态组件</header>
+            <section class="content">
+                <div class="h">
+                   <p>
+                    我们巧用is属性来帮我们切换当前的组件
+                   </p>
+                </div>
+                <div class="detail">
+                    <select v-model="currentComponent">
+                        <option value="component-counter">component-counter</option>
+                        <option value="component-nativeevent">component-nativeevent</option>
+                        <option value="component-name">component-name</option>
+                    </select>
+                    <component :is="currentComponent"></component>
+                    
+                    <br/>
+                    <br/>
+                    <div>
+                        <p>使用keep-alive指令参数</p>
+                        <p>当我们把切出去的组件保留在内存中，这样可以保留他的状态当我们切换回来的时候避免了重复的渲染，这样上面的我们可以这样写，只保留变动的部分</p>
+                    </div>
+                    <keep-alive>
+                        <component :is="currentComponent"></component>
+                    </keep-alive>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>Vue组件的api</header>
+            <section class="content">
+                <div class="h">
+                    vue组件的API来自三个部分
+                </div>
+                <div class="detail">
+                   <ul>
+                       <li>prop</li>
+                       <li>事件</li>
+                       <li>插槽</li>
+                   </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>$ref的使用(子组件的引用)</header>
+            <section class="content">
+                <div class="h">
+                    $ref允许父组件直接访问相应的子组件，将返回对应的子组件的实例
+                </div>
+                <div class="detail">
+                   <component-ref ref="profile"></component-ref>
+                   <button @click="getProfileRef('profile')">点击我看看能否获取profile实例</button>
+
+                   <br/>
+
+                   <button @click="getProfileRef('vfor')">和v-for一起使用</button>
+                   <ul>
+                       <li 
+                            is="component-li"
+                            ref="vfor"
+                            v-for="(student, key) of students"
+                            :student="student"></li>
+                   </ul>
+                   <p>我们可以看到控制台中打印的是一个数组包含循环数据源和一个对应的子组件</p>
+                   <p>补充$refs是在组件完全渲染后才填充进去的，所以不要在模板或计算属性中使用它（官方将的是非响应式的估计和生命周期中的一些非响应式有关，这里在渲染完全后的methods方法中我们可以更新）</p>
+                </div>
+            </section>
+        </div>
+
+
+
     </div>
     <script src="./components/BasicComponent.js"></script>
     <script>
         let data = {
+            currentComponent: 'component-name',
             students: [
                 {
                     name:'张烁',
@@ -285,7 +373,12 @@
                 return data;
             },
             computed: {
-
+                test: function() {
+                    var profile = app.$refs[str];
+                        console.log(profile);
+                        console.log(profile.name);
+                        profile.name = 'shuozhang'+Math.random();
+                }
             },
             methods: {
                 filterStudent: function() {
@@ -299,6 +392,19 @@
                 },
                 doYourSelf: function() {
                     alert('Do yourself!');
+                },
+                getProfileRef: function(str) {
+                    if(str=='profile') {
+                        var profile = app.$refs[str];
+                        console.log(profile);
+                        console.log(profile.name);
+                        profile.name = 'shuozhang'+Math.random();//这里官网说他是非响应式的
+
+                    }else{
+                        var profile = app.$refs[str];
+                        console.log(profile);
+                    }
+                    
                 }
             },
         })
