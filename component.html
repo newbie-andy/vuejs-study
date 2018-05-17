@@ -363,6 +363,34 @@
             </section>
         </div>
 
+        <div class="block">
+            <header>异步组件</header>
+            <section class="content">
+                <div class="h">
+                    在大型的应用的我们可能需要将应用分成不同的模块，这样我们就可以按需进行异步的下载，
+                    vuejs在需要组件时触发工厂模式进行解析后渲染
+                </div>
+                <div class="detail">
+                    <p>这里我们可以看到当页面加载2s后才会显示到页面中（这里是模拟的异步数据的处理，当然我们可以运用网路请求的方式）</p>
+                   <async-example></async-example>
+                </div>
+            </section>
+        </div>
+
+        <div class="block">
+            <header>自定义指令</header>
+            <section class="content">
+                <div class="h">
+                    Vuejs提供一个自定义指令的函数，我们可以通过它创建属于我们自己的自指令，这样我们就可以灵活的操作我们的数据，
+                    创建
+                </div>
+                <div class="detail">
+                    <p>这里我们可以看到当页面加载2s后才会显示到页面中（这里是模拟的异步数据的处理，当然我们可以运用网路请求的方式）</p>
+                    <async-example></async-example>
+                </div>
+            </section>
+        </div>
+
 
 
     </div>
@@ -395,8 +423,7 @@
             getStudent:[],
             inputstudent: '',
             todo: {
-                name: 'zhangsan',
-                isComplete: true
+                
             },
             total: 0,
             bar: 'hello',
@@ -408,6 +435,14 @@
             },
             data() {
                 return data;
+            },
+            created() {
+                setTimeout(() => {
+                    this.todo = {
+                        name: 'zhangsan',
+                        isComplete: true
+                    }
+                }, 2000)
             },
             computed: {
                 test: function() {

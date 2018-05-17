@@ -172,3 +172,11 @@ Vue.component('component-li', {
     props: ['student'],
     template: `<li>{{ student.name }}</li>`,
 })
+
+Vue.component('async-example', function(resolve, reject) {
+    setTimeout(function() {
+        resolve({
+            template: '<div>I am async!</div>'
+        });
+    }, 2000)
+}) 

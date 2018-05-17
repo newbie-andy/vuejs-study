@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>component</title>
+    <link rel="stylesheet" href="./common.css" >
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="transition">
+        {{ message }}
+    </div>
+<script>
+    var APP = new Vue({
+        el: '#transition',
+        data() {
+            return {
+                "message": 'hello',
+            }
+        },
+        created: function() {
+
+        },
+        updated: function() {
+
+        },
+        computed: {
+
+        },
+        methods: {
+
+        }
+    })
+</script>
+</body>
+</html>
